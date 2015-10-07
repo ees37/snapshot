@@ -10,6 +10,7 @@ router.get('/', function(req, res) {
   {
     piblaster.setPwm(18,d);
     sleep.sleep(4);
+    console.log("switching");
   }
 });
 
