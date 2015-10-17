@@ -1,6 +1,4 @@
 extends layout
 
-block content
-  h1= title
-  each snap in ${photos}
-    img(src="http://" + snap)
+each snap in #{photos}
+  img(src="http://" + snap)

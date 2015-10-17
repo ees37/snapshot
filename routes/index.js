@@ -5,10 +5,10 @@ var snap = require('snapshot/snapshot.js')
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  snap.snapImage(snapshots, function() {
-
+  snap.snapImage(function(snapshots) {
+    res.contentType('application/json');
+    res.send('index', { photos: JSON.stringify(snapshots) });
   });
-  res.render('index', { photos: snapshots });
 });
 
 module.exports = router;
