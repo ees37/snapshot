@@ -7,6 +7,7 @@ var snap = require('snapshot/snapshot.js')
 router.get('/', function(req, res) {
   snap.snapImage(function(snapshots) {
     res.contentType('application/json');
+    console.log("displayng images");
     res.send('index', { photos: JSON.stringify(snapshots) });
   });
 });
