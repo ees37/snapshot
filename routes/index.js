@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
   snap.snapImage(function(snapshot) {
     res.contentType('application/json');
     console.log("displayng images");
-    res.send('index', { photos: snapshot });
+    res.send('index', { photo: snapshot });
   });
 });
 
