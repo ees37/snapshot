@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
     var img = fs.readFileSync(snapshot);
     //res.render('index', { photo: "/home/snapshot/" + snapshot });
     res.writeHead('200', {'Content-Type': 'image/png'});
-    res.end("/home/snapshot/" + snapshot,'binary');
+    res.end(img + snapshot,'binary');
   });
 });
 
