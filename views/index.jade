@@ -1,3 +1,8 @@
-extends layout
-
-img(src=#{photo})
+doctype html
+html
+  head
+    title Welcome
+  body
+    h1 Today's photos:
+    for image in images
+        img(src=image)
