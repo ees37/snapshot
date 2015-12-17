@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 var blaster = require('pi-blaster.js');
+<<<<<<< HEAD
 var snap = require('snapshot/snapshot.js');
 var dateformat = require('dateformat');
 var fs = require('fs');
@@ -31,7 +32,6 @@ router.get('/', function(req, res) {
   {
     fs.mkdirSync("/home/ees37/workspace/snapshot/public/images/plants/" + today );
   }
-  //res.render('index');
 });
 
 module.exports = router;
