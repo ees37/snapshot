@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 var blaster = require('pi-blaster.js');
-<<<<<<< HEAD
+
 var snap = require('snapshot/snapshot.js');
 var dateformat = require('dateformat');
 var fs = require('fs');
