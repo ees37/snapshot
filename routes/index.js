@@ -15,6 +15,7 @@ router.get('/', function(req, res) {
   var today = dateformat(new Date(), "mm-dd-yyyy");
   var today_dir = PLANT_IMG_FULL_PATH + today;
 
+  snap.stitchPhotos();
   if (fs.existsSync(today_dir))
   {
       var plant_imgs = [];
