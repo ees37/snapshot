@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
-var blaster = require('pi-blaster.js');
 
 var snap = require('snapshot/snapshot.js');
 var dateformat = require('dateformat');
