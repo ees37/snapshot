@@ -11,11 +11,25 @@ var PLANT_REL_PATH = "/images/plants/";
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  // get the directory of images to show
-  var today = dateformat(new Date(), "mm-dd-yyyy");
-  var today_dir = PLANT_IMG_FULL_PATH + today;
+  // show any images for todays date
+    res.redirect('/' + getTodaysDate());
+});
 
-  snap.stitchPhotos();
+router.get(/-/, function(req, res) {
+  // show images for the specified date
+  showImagesForDate(res, req.url.substring(1));
+});
+
+router.get('/take', function(req, res) {
+    snap.stitchPhotos(PLANT_IMG_FULL_PATH + dateformat(new Date(), "mm-dd-yyyy") + "/temp/",
+      PLANT_IMG_FULL_PATH + dateformat(new Date(), "mm-dd-yyyy") + "/" + dateformat(new Date(), "mm-dd-yyyy_h:MM:ss"));
+
+});
+
+function showImagesForDate(res, date)
+{
+  var today_dir = PLANT_IMG_FULL_PATH + date;
+
   if (fs.existsSync(today_dir))
   {
       var plant_imgs = [];
@@ -23,15 +37,21 @@ router.get('/', function(req, res) {
       for (i = 0; i < files.length; ++i)
       {
         console.log("adding: " + today_dir + files[i]);
-        plant_imgs[i] = PLANT_REL_PATH + today + "/" + files[i];
+        plant_imgs[i] = PLANT_REL_PATH + date + "/" + files[i];
       }
 
       res.render('index', {images: plant_imgs});
   }
   else
   {
-    fs.mkdirSync("/home/ees37/workspace/snapshot/public/images/plants/" + today );
+    fs.mkdirSync(PLANT_IMG_FULL_PATH + getTodaysDate());
+    showImagesForDate(getTodaysDate());
   }
-});
+}
+
+function getTodaysDate()
+{
+  return dateformat(new Date(), "mm-dd-yyyy");
+}
 
 module.exports = router;
