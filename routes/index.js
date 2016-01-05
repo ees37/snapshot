@@ -6,6 +6,7 @@ var snap = require('snapshot/snapshot.js');
 var dateformat = require('dateformat');
 var fs = require('fs');
 
+//var PLANT_IMG_FULL_PATH = "/home/ees37/workspace/snapshot/public/images/plants/";
 var PLANT_IMG_FULL_PATH = "/home/snapshot/public/images/plants/";
 var PLANT_REL_PATH = "/images/plants/";
 
