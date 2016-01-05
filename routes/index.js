@@ -29,7 +29,7 @@ router.get('/take', function(req, res) {
 
 function showImagesForDate(res, date)
 {
-  var today_dir = PLANT_IMG_FULL_PATH + date;
+  var today_dir = PLANT_IMG_FULL_PATH + date + "/";
 
   if (fs.existsSync(today_dir))
   {
