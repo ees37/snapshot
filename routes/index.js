@@ -21,10 +21,9 @@ router.get(/-/, function(req, res) {
 });
 
 router.get('/take', function(req, res) {
-    snap.snapImage(PLANT_IMG_FULL_PATH + getTodaysDate() + "/temp/");
-    snap.stitchPhotos(PLANT_IMG_FULL_PATH + getTodaysDate() + "/temp/",
-      PLANT_IMG_FULL_PATH + getTodaysDate() + "/" + dateformat(new Date(), "mm-dd-yyyy_h:MM:ss"));
-
+    snap.snapImage(PLANT_IMG_FULL_PATH + getTodaysDate() + "/temp/",
+     PLANT_IMG_FULL_PATH + getTodaysDate() + "/" + dateformat(new Date(), "mm-dd-yyyy_h:MM:ss"),
+     function() {});
 });
 
 function showImagesForDate(res, date)
