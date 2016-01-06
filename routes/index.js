@@ -45,7 +45,7 @@ function showImagesForDate(res, date)
   }
   else
   {
-    fs.mkdirSync(PLANT_IMG_FULL_PATH + getTodaysDate());
+    fs.mkdirSync(PLANT_IMG_FULL_PATH + getTodaysDate() + "/");
     showImagesForDate(getTodaysDate());
   }
 }
