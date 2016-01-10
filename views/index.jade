@@ -3,6 +3,7 @@ html
   head
     title Welcome
   body
-    h1 Today's photos:
+    h1=images[0].split('/')[images[0].split('/').length - 1].split("_")[0] + "):"
     for image in images
         img(src=image)
+        p=image.split('/')[image.split('/').length - 1].split("_")[1]
