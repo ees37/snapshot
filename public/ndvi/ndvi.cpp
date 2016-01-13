@@ -1,21 +1,66 @@
-#include <opencv2/highgui/highgui.hpp>
+//#include <opencv2/highgui/highgui.hpp>
 #include <string>
+#include <opencv2/opencv.hpp>
+#include <iostream>
+
+// This constant represents the maximum integer that can be represented with
+// 3 bytes
+int THREE_BYTES_MAX = 0xFFFFFF;
 
 int main(int argc, char* argv[])
 {
+    // the original nir image should be passed as the first parameter
     std::string nirImage = argv[1];
 
-    cv::Mat image = imread(nirImage);
+    // read the image into a matrix
+    cv::Mat img = cv::imread(nirImage);
 
+    /*
+     * Iterate through every pixel of the nir (near-infrared) image, transforming
+     * it into a NDVI (normalized difference vegetation index) version of the
+     * image.
+     * Since the image was taken with a red filter, blue actually represents
+     * infrared and red and green represent normal visible light.
+     */
     for (int y = 0; y < img.rows; ++y)
     {
       for (int x = 0; x < img.cols; ++x)
       {
-        Vec3b pixels = img.at<Vec3b>(Point(x,y));
-        int red = pixels[0];
-        int green = pixels[1];
-        int nir = pixels[2];
-        double ndvi = ((nir - vis) / (nir + vis) + 1) / 2;
+        cv::Vec3b *pixels = &(img.at<cv::Vec3b>(cv::Point(x,y)));
+        unsigned char red = (*pixels)[0];
+        unsigned char green = (*pixels)[1];
+        unsigned char blue = (*pixels)[2];
+
+        // this ndvi value is a 0.00 - 1.00 float that represents the
+        // vegetation index of the current pixel
+        double ndvi = ((((double)(blue - red)) / ((double)(blue + red))) + 1.00) / 2.00;
+
+        /*
+         * Convert the ndvi value into a RGB color.
+         * Note that 0xFF casts to an integer of:
+         *  00000000 00000000 00000000 11111111
+         */
+         // first, scale the ndvi value to a 3 byte integer
+         int ndviInt = (int)(ndvi * THREE_BYTES_MAX);
+         // the red value is the 3rd byte
+         red = (unsigned char)((ndviInt >> 16) & 0xFF);
+         // the green value is the second byte
+         green = (unsigned char)((ndviInt >> 8) & 0xFF);
+         // the blue value is the first byte
+         blue  = (unsigned char)(ndviInt & 0xFF);
+
+         std::cout << "ndvi:  " << ndvi << ", red: " << (int)red
+         << ", green: " << (int)green <<
+         ", blue: " << (int)blue << std::endl;
+
+         // now, reset the pixel and apply it to the matrix
+         (*pixels)[0] = red;
+         (*pixels)[1] = green;
+         (*pixels)[2] = blue;
       }
     }
+
+    // save the image back
+    std::string pathOut(argv[1]);
+    cv::imwrite(pathOut + "_ndvi", img);
 }
