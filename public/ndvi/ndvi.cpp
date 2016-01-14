@@ -26,37 +26,41 @@ int main(int argc, char* argv[])
     {
       for (int x = 0; x < img.cols; ++x)
       {
-        cv::Vec3b *pixels = &(img.at<cv::Vec3b>(cv::Point(x,y)));
-        unsigned char red = (*pixels)[0];
-        unsigned char green = (*pixels)[1];
-        unsigned char blue = (*pixels)[2];
+        cv::Vec3b pixels = img.at<cv::Vec3b>(cv::Point(x,y));
+        uchar red = pixels.val[0];
+        uchar green = pixels.val[1];
+        uchar blue = pixels.val[2];
 
         // this ndvi value is a 0.00 - 1.00 float that represents the
         // vegetation index of the current pixel
-        double ndvi = ((((double)(blue - red)) / ((double)(blue + red))) + 1.00) / 2.00;
+        double ndvi = (((double)(blue - red) / (double)(blue + red)) + 1.00) / 2.00;
+
+        std::cout << "ndvi:  " << ndvi << ", red: " << (int)red
+        << ", green: " << (int)green <<
+        ", blue: " << blue << std::endl;
 
         /*
          * Convert the ndvi value into a RGB color.
          * Note that 0xFF casts to an integer of:
          *  00000000 00000000 00000000 11111111
          */
-         // first, scale the ndvi value to a 3 byte integer
-         int ndviInt = (int)(ndvi * THREE_BYTES_MAX);
-         // the red value is the 3rd byte
-         red = (unsigned char)((ndviInt >> 16) & 0xFF);
-         // the green value is the second byte
-         green = (unsigned char)((ndviInt >> 8) & 0xFF);
-         // the blue value is the first byte
-         blue  = (unsigned char)(ndviInt & 0xFF);
+        //  // first, scale the ndvi value to a 3 byte integer
+          int ndviInt = (int)(ndvi * THREE_BYTES_MAX);
+        //  // the red value is the 3rd byte
+        //  red = (unsigned char)((ndviInt >> 16) & 0xFF);
+        //  // the green value is the second byte
+        //  green = (unsigned char)((ndviInt >> 8) & 0xFF);
+        //  // the blue value is the first byte
+        //  blue  = (unsigned char)(ndviInt & 0xFF);
 
-         std::cout << "ndvi:  " << ndvi << ", red: " << (int)red
-         << ", green: " << (int)green <<
-         ", blue: " << (int)blue << std::endl;
+         red = ndvi * red;
+         blue = (1 - ndvi) * blue;
+         green = abs(0.5 - ndvi) * 2 * green;
 
          // now, reset the pixel and apply it to the matrix
-         (*pixels)[0] = red;
-         (*pixels)[1] = green;
-         (*pixels)[2] = blue;
+         img.at<cv::Vec3b>(cv::Point(x,y)).val[0] = red;
+         img.at<cv::Vec3b>(cv::Point(x,y)).val[1] = green;
+         img.at<cv::Vec3b>(cv::Point(x,y)).val[2] = blue;
       }
     }
 
