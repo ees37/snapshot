@@ -25,6 +25,8 @@ router.get('/take', function(req, res) {
     snap.snapImage(PLANT_IMG_FULL_PATH + getTodaysDate() + "/temp/",
      PLANT_IMG_FULL_PATH + getTodaysDate() + "/" + dateformat(new Date(), "mm-dd-yyyy_h:MM:ss") + ".jpg",
      function() {showImagesForDate(res, getTodaysDate())});
+
+     res.render('camera');
 });
 
 function showImagesForDate(res, date)
